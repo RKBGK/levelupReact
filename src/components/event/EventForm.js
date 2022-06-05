@@ -9,18 +9,28 @@ export const EventForm = () => {
         description: "",
         eventDate: "",
         eventTime: "",
-        game: ""
+        eventGame: ""
     })
 
     useEffect(() => {
         getGames().then(setGames)
     },[])
 
-    const changeEventState = (event) => {
-        const newEvent = Object.assign({}, currentEvent)
-        newEvent[event.target.name] = event.target.Value
+    // const changeEventState = (event) => {
+    //     const newEvent = Object.assign({}, currentEvent)
+    //     newEvent[event.target.name] = event.target.Value
+    //     setCurrentEvent(newEvent)
+    //     console.log(newEvent)
+    // }
+
+    const changeEventState = (e) => {
+        const newEvent = Object.assign({}, currentEvent,) 
+        let selectedVal = e.target.value
+        newEvent[e.target.id] = selectedVal
         setCurrentEvent(newEvent)
-    }
+        console.log(newEvent)
+      }
+    
 
     return(
         <form className="eventForm">
@@ -29,8 +39,10 @@ export const EventForm = () => {
                 <div className="form-group">
                     <label htmlFor="description">Title: </label>
                     <input type="text" name="description" required autoFocus className="form-control"
-                        value={currentEvent.description}
-                        onChange={changeEventState}
+                    value={currentEvent.description}
+                    onChange={changeEventState}
+                    id = "description"
+
                     />
                 </div>
             </fieldset>
@@ -40,6 +52,7 @@ export const EventForm = () => {
                     <input type="date" name="eventDate" required autoFocus className="form-control"
                         value={currentEvent.eventDate}
                         onChange={changeEventState}
+                        id = "eventDate"
                     />
                 </div>
             </fieldset>
@@ -49,15 +62,17 @@ export const EventForm = () => {
                     <input type="time" name="eventTime" required autoFocus className="form-control"
                         value={currentEvent.eventTime}
                         onChange={changeEventState}
+                        id = "eventTime"
                     />
                 </div>
             </fieldset>
             <fieldset>
                 <div className="form-group">
-                    <label htmlFor="game">Game Type: </label>
-                    <select name="game" className="form-control"
-                        value={currentEvent.game}
-                        onChange={changeEventState}>
+                    <label htmlFor="eventGame">Game: </label>
+                    <select name="eventGame" className="form-control"
+                        value={currentEvent.eventGame}
+                        onChange={changeEventState}
+                        id = "eventGame">
 
                         <option value="0">Select a game </option>
                         {
@@ -77,9 +92,9 @@ export const EventForm = () => {
 
                     const gameEvent = {
                         description: currentEvent.description,
-                        eventDate: currentEvent.eventDate,
-                        eventTime: parseInt(currentEvent.eventTime),
-                        game: parseInt(game)                      
+                        date: currentEvent.eventDate,
+                        time: currentEvent.eventTime,
+                        game: parseInt(currentEvent.eventGame)                      
                     }
 
                     // Send POST request to your API
