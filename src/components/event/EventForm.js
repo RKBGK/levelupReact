@@ -16,20 +16,20 @@ export const EventForm = () => {
         getGames().then(setGames)
     },[])
 
-    // const changeEventState = (event) => {
-    //     const newEvent = Object.assign({}, currentEvent)
-    //     newEvent[event.target.name] = event.target.Value
-    //     setCurrentEvent(newEvent)
-    //     console.log(newEvent)
-    // }
-
-    const changeEventState = (e) => {
-        const newEvent = Object.assign({}, currentEvent,) 
-        let selectedVal = e.target.value
-        newEvent[e.target.id] = selectedVal
+    const changeEventState = (event) => {
+        const newEvent = Object.assign({}, currentEvent)
+        newEvent[event.target.name] = event.target.value
         setCurrentEvent(newEvent)
         console.log(newEvent)
-      }
+    }
+
+    // const changeEventState = (e) => {
+    //     const newEvent = Object.assign({}, currentEvent,) 
+    //     let selectedVal = e.target.value
+    //     newEvent[e.target.id] = selectedVal
+    //     setCurrentEvent(newEvent)
+    //     console.log(newEvent)
+    //   }
     
 
     return(
@@ -41,7 +41,6 @@ export const EventForm = () => {
                     <input type="text" name="description" required autoFocus className="form-control"
                     value={currentEvent.description}
                     onChange={changeEventState}
-                    id = "description"
 
                     />
                 </div>
@@ -52,7 +51,6 @@ export const EventForm = () => {
                     <input type="date" name="eventDate" required autoFocus className="form-control"
                         value={currentEvent.eventDate}
                         onChange={changeEventState}
-                        id = "eventDate"
                     />
                 </div>
             </fieldset>
@@ -62,7 +60,6 @@ export const EventForm = () => {
                     <input type="time" name="eventTime" required autoFocus className="form-control"
                         value={currentEvent.eventTime}
                         onChange={changeEventState}
-                        id = "eventTime"
                     />
                 </div>
             </fieldset>
@@ -72,7 +69,7 @@ export const EventForm = () => {
                     <select name="eventGame" className="form-control"
                         value={currentEvent.eventGame}
                         onChange={changeEventState}
-                        id = "eventGame">
+                        >
 
                         <option value="0">Select a game </option>
                         {
