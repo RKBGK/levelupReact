@@ -36,3 +36,25 @@
     transform: rotate(360deg);
   }
 }
+
+.card {
+  display: flex;
+  max-width: 400px;
+  flex-wrap: nwrap;
+  padding-top: 10px;
+  padding-bottom: 10px;  
+  display:block;
+
+  border: 1px solid #eee;
+  border-radius: 12px;
+  text-align: center;
+  
+}
+
+.gameForm .eventForm  {
+  width: 50%;
+  background-color: #fff;
+  padding: 20px;
+  align-content: center;
+  
+}
