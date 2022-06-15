@@ -1,25 +1,48 @@
 import React, { useState, useEffect } from "react"
-import { useHistory } from 'react-router-dom'
-import { createGame, getGameTypes } from './GameManager.js'
+import { useHistory, useParams } from 'react-router-dom'
+import { createGame, getGameById, getGameTypes, updateGame } from './GameManager.js'
+
+const initialState = {
+    skillLevel: 1,
+    numberOfPlayers: 0,
+    title: "",
+    maker: "",
+    gameTypeId: 0}
 
 export const GameForm = () => {
+    // const [formGame, setFormGame] = useState(initialState);
+    const [currentGame, setCurrentGame] = useState(initialState)
     const history = useHistory()
     const [gameTypes, setGameTypes] = useState([])
+    const { id } = useParams()
+    const editMode = id ? true : false
       /*
         Since the input fields are bound to the values of
         the properties of this state variable, you need to
         provide some default values.
     */
-    const [currentGame, setCurrentGame] = useState({
-        skillLevel: 1,
-        numberOfPlayers: 0,
-        title: "",
-        maker: "",
-        gameTypeId: 0
-    })
+
 //  gamerId: localStorage.getItem("lu_token")
     useEffect(() => {
-        getGameTypes().then(setGameTypes)
+        if (editMode) {      
+            let isMounted = true;
+            getGameById(id).then((res) => {
+              if (isMounted)  {
+                setCurrentGame(
+                    {
+                        skillLevel: res.skill_level,
+                        numberOfPlayers: res.number_of_players,
+                        title: res.title,
+                        maker: res.maker,
+                        gameTypeId: res.game_type.id
+                    }
+                )
+
+                console.log(res)
+              }
+            })
+        }
+         getGameTypes().then(setGameTypes)
     }, [])
 
     const changeGameState = (event) => {
@@ -103,10 +126,15 @@ export const GameForm = () => {
                     }
 
                     // Send POST request to your API
-                    createGame(game)
-                        .then(() => history.push("/games"))
+                    {editMode ?                         
+                        (updateGame({...game,id})
+                            .then(() => history.push("/games"))) :
+                        (createGame(game)
+                            .then(() => history.push("/games")))
+
+                    }
                 }}
-                className="btn btn-primary">Create</button>
+                className="btn btn-primary">{editMode ? "Save Updates" : "Add a new game"}</button>
         </form>
     )
 }
