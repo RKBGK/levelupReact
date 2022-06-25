@@ -134,7 +134,7 @@ export const GameForm = () => {
 
                     }
                 }}
-                className="btn btn-primary">{editMode ? "Save Updates" : "Add a new game"}</button>
+                className="btn btn-primary">{editMode ? "Updates" : "Add a new game"}</button>
         </form>
     )
 }

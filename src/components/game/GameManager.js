@@ -41,14 +41,6 @@ export const createGame = (newgame) => {
 }
 
 export const updateGame = (game) => {
-    // const game = {
-    //     id: id,
-    //     maker: gameobj.maker,
-    //     title: gameobj.title,
-    //     number_of_players: gameobj.number_of_players,
-    //     skill_level: gameobj.skill_level,
-    //     game_type_id : gameobj.game_type_id                       
-    // }
     console.log("updateGame",game)
     return fetch(`${remoteURL}/games/${game.id}`, {
         method: "PUT",
@@ -66,10 +58,10 @@ export const deleteGame = (id) => {
     return fetch(`${remoteURL}/games/${id}`, {
         method: "DELETE",
         headers: {
-            "Authorization": `Token ${localStorage.getItem("lu_token")}`,
-            "Content-Type": "application/json"
+            "Authorization": `Token ${localStorage.getItem("lu_token")}`
         }
      })
         .then(getGames)
         
 }
+

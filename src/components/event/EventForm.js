@@ -1,18 +1,37 @@
 import React, { useState, useEffect } from "react"
-import { useHistory } from "react-router-dom"
-import { createEvent, getGames } from "./EventManager"
-
+import { useHistory, useParams } from "react-router-dom"
+import { createEvent, getEventById, getGames, updateEvent } from "./EventManager"
+const initialState = {
+    description: "",
+    eventDate: "",
+    eventTime: "",
+    eventGame: ""
+}
 export const EventForm = () => {
     const history = useHistory()
     const [games, setGames] = useState([])
-    const [currentEvent, setCurrentEvent] = useState({
-        description: "",
-        eventDate: "",
-        eventTime: "",
-        eventGame: ""
-    })
+    const [currentEvent, setCurrentEvent] = useState(initialState)
+    const { id } = useParams()
+    const editMode = id ? true : false
 
     useEffect(() => {
+        if (editMode) {
+            let isMounted = true;
+            getEventById(id).then((res) => {
+                if (isMounted) {
+                    setCurrentEvent(
+                        {
+                           description: res.description,
+                           eventDate: res.date,
+                           eventTime: res.time,
+                           eventGame: res.game.id
+                        }
+                    )
+                    console.log(res)
+                }
+            })
+            
+        }
         getGames().then(setGames)
     },[])
 
@@ -94,11 +113,19 @@ export const EventForm = () => {
                         game: parseInt(currentEvent.eventGame)                      
                     }
 
+                    {editMode ?                         
+                        (updateEvent({...gameEvent,id})
+                            .then(() => history.push("/events"))) :
+                        (createEvent(gameEvent)
+                            .then(() => history.push("/events")))
+
+                    }
+
                     // Send POST request to your API
-                    createEvent(gameEvent)
-                        .then(() => history.push("/events"))
+                    // createEvent(gameEvent)
+                    //     .then(() => history.push("/events"))
                 }}
-                className="btn btn-primary">Create</button>
+                className="btn btn-primary">{editMode ? "Updates" : "Add a new event"}</button>
 
         </form>
     )

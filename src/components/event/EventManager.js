@@ -1,4 +1,5 @@
 const remoteURL = "http://localhost:8000"
+
 export const getEvents = () => {
     return fetch("http://localhost:8000/events", {
         headers:{
@@ -30,7 +31,7 @@ export const createEvent = (newevent) => {
 }
 
 export const getEventById = (id) => {
-    return fetch(`${remoteURL}/games/${id}`, {
+    return fetch(`${remoteURL}/events/${id}`, {
         headers:{
             "Authorization": `Token ${localStorage.getItem("lu_token")}`
         }
@@ -56,10 +57,32 @@ export const deleteEvent = (id) => {
     return fetch(`${remoteURL}/events/${id}`, {
         method: "DELETE",
         headers: {
-            "Authorization": `Token ${localStorage.getItem("lu_token")}`,
-            "Content-Type": "application/json"
+            "Authorization": `Token ${localStorage.getItem("lu_token")}`
         }
      })
         .then(getEvents)
         
+}
+
+export const leaveEvent = eventId => {
+    return fetch(`${remoteURL}/events/${eventId}/leave`, {
+        method: "DELETE",
+        headers: {
+            "Authorization": `Token ${localStorage.getItem("lu_token")}`
+        }
+     })
+        .then(getEvents)
+        
+}
+  
+export const joinEvent = event => {
+    return fetch(`${remoteURL}/events/${event}/signup`, {
+        method: "POST",
+        headers: {
+            "Authorization": `Token ${localStorage.getItem("lu_token")}`,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(event)
+     })
+        .then(getEvents)
 }
